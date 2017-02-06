@@ -3,14 +3,16 @@
 	<head>
 		<title>Fisher–Yates shuffle</title>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.css"/>
 		<script src="js/game.js" type="application/javascript"></script>
 	</head>
 
 	<body>
 		<h1>Fisher–Yates shuffle game</h1>
-		Current money : <span name="bank" id="bank"></span><br/><!-- Displays the amount of money the user has -->
+		Current money : <span name="bank" id="bank"></span><br/><br/><!-- Displays the amount of money the user has -->
 		Your bid : <input name="bid" id="bid" value="0"/><!-- Lets the user bet something -->
-		<div id="button"><input type="button" onclick="main()" value="play"/></div><!-- button to launch js file -->
+		<div id="button"><input type="button" onclick="main()" value="play"/></div><br/><!-- button to launch js file -->
+		You gained : <span name="gain" id="gain"/></span><!-- Displays the amount of money the user has won -->
 		<div id="cards"></div><!-- div where the three cards are displayed -->
 	</body>
 </html>

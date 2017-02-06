@@ -1,8 +1,12 @@
 // Variables declaration
 var DEFAULT_BANK = 100;
+var NO_GAIN = 0;
 var kings = [];
 var queens = [];
 var jacks = [];
+var randomKing = [];
+var randomQueen = [];
+var randomJack = [];
 
 /**
  * Function at the first opening of the page only
@@ -40,7 +44,7 @@ function generateDeck() {
 
 /**
  * startGame function
- * to simply play the game!
+ * to just simply play the game!
  * */
 function startGame() {
 
@@ -49,16 +53,14 @@ function startGame() {
 	var fullSet = 0;
 
 	// Storing values from HTML-file in two variables
-	var bid = parseInt(document.getElementById("bid").value);
 	var bank = parseInt(document.getElementById("bank").innerHTML);
+	var gain = parseInt(document.getElementById("gain").innerHTML);
+	var bid = parseInt(document.getElementById("bid").value);
 
 	// Picking three random cards using a dedicated function
 	randomKing = pickRandomCard(kings);
 	randomQueen = pickRandomCard(queens);
 	randomJack = pickRandomCard(jacks);
-
-	// Displaying those three cards
-	displayCards();
 
 	// Removing bid from money amount
 	if (bid <= bank && bid > 0) {
@@ -94,49 +96,44 @@ function startGame() {
 			// We do have a full set of cards of the same kind
 			fullSet += 1;
 
-			// Give back the user twice the amount of his bet
-			document.getElementById("bank").innerHTML = bank + (bid * 2);
+			// The user won twice the amount of his bet
+			document.getElementById("gain").innerHTML = bid * 2;
 
-			// Tell him he just got a fat paycheck
-			alert("Gain : " + (bid * 2));
+			// Add it to the bank
+			document.getElementById("bank").innerHTML = bank + (bid * 2);
 		}
 	}
 
 	// If unfortunately we do not have a set of cards of the same kind
 	if (fullSet != 1) {
 
-		// Second loop : to see if we have a set of cards of the same color
-		for(i = 0; i < 1; i++) {
+		// If all the cards are black
+		if ((randomKing[0].endsWith(types[0]) || randomKing[0].endsWith(types[2]))
+		&& (randomQueen[0].endsWith(types[0]) || randomQueen[0].endsWith(types[2]))
+		&& (randomJack[0].endsWith(types[0]) || randomJack[0].endsWith(types[2]))) {
 
-			// If all the cards are black
-			if ((randomKing[0].endsWith(types[0]) || randomKing[0].endsWith(types[2]))
-			&& (randomQueen[0].endsWith(types[0]) || randomQueen[0].endsWith(types[2]))
-			&& (randomJack[0].endsWith(types[0]) || randomJack[0].endsWith(types[2]))) {
+			// The user wins the amount of his bet
+			document.getElementById("gain").innerHTML = bid;
 
-				// Give back the user the amount of his bet
-				document.getElementById("bank").innerHTML = bank + bid;
+			// Add it to the bank
+			document.getElementById("bank").innerHTML = bank + bid;
+		}
 
-				// Inform him about it
-				alert("Gain : " + bid);
+		// If all the cards are red
+		else if ((randomKing[0].endsWith(types[1]) || randomKing[0].endsWith(types[3]))
+		&& (randomQueen[0].endsWith(types[1]) || randomQueen[0].endsWith(types[3]))
+		&& (randomJack[0].endsWith(types[1]) || randomJack[0].endsWith(types[3]))) {
 
-				// Exit the loop
-				break;
-			}
+			// The user wins the amount of his bet
+			document.getElementById("gain").innerHTML = bid;
 
-			// If all the cards are red
-			else if ((randomKing[0].endsWith(types[1]) || randomKing[0].endsWith(types[3]))
-			&& (randomQueen[0].endsWith(types[1]) || randomQueen[0].endsWith(types[3]))
-			&& (randomJack[0].endsWith(types[1]) || randomJack[0].endsWith(types[3]))) {
+			// Add it to the bank
+			document.getElementById("bank").innerHTML = bank + bid;
+		}
 
-				// Give back the user the amount of his bet
-				document.getElementById("bank").innerHTML = bank + bid;
-
-				// Inform him about it
-				alert("Gain : " + bid);
-
-				// Exit the loop
-				break;
-			}
+		else {
+			// No pain no gain
+			document.getElementById("gain").innerHTML = NO_GAIN;
 		}
 	}	
 }
@@ -181,8 +178,8 @@ function displayCards() {
 	var jackCardDisplay = randomJack[0] + ".png";
 
 	// Searching the cards in img/ and displaying them
-	document.getElementById("cards").innerHTML = "<img src='img/" + kingCardDisplay + "'>";
-	document.getElementById("cards").innerHTML += "<img src='img/" + queenCardDisplay + "'>";
+	document.getElementById("cards").innerHTML = "<img src='img/" + kingCardDisplay + "'>" + " ";
+	document.getElementById("cards").innerHTML += "<img src='img/" + queenCardDisplay + "'>" + " ";
 	document.getElementById("cards").innerHTML += "<img src='img/" + jackCardDisplay + "'>";	
 }
 
@@ -196,4 +193,7 @@ function main() {
 
 	// Launch the game
 	startGame();
+
+	// Display the cards
+	displayCards();
 }
